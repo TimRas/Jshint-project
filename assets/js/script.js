@@ -1,13 +1,31 @@
 const API_KEY = "fmMOi8zwMATJsFLfKwH11lkh5G8";
 const API_URL = "https://ci-jshint.herokuapp.com/api";
+const API_KEY = "VZn-Fx2ohpPGHAs_RhP_m6IgxYA";
+const API_URL = "https://ci-jshint.herokuapp.com/api";
 const resultsModal = new bootstrap.Modal(document.getElementById("resultsModal"));
 
 document.getElementById("status").addEventListener("click", e => getStatus(e));
 document.getElementById("submit").addEventListener("click", e => postForm(e));
 
+function processOptions(form) {
+    let optArray = [];
+
+    for (let e of form.entries()) {
+        if (e[0] === "options") {
+            optArray.push(e[1]);
+        }
+    }
+
+    form.delete("options");
+
+    form.append("options", optArray.join());
+
+    return form;
+}
+
 async function postForm(e) {
 
-    const form = new FormData(document.getElementById("checksform"));
+    const form = processOptions(new FormData(document.getElementById("checksform")));
 
     const response = await fetch(API_URL, {
         method: "POST",
